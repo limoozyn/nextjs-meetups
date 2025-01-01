@@ -41,7 +41,14 @@ export async function getStaticPaths() {
     if (client) {
       await client.close(); // Ensure this is called on a MongoClient instance
     }
-    return;
+    return {
+      paths: {
+        params: {
+          meetupId: "1",
+        },
+      },
+      fallback: true,
+    };
   }
   try {
     const meetupIds = await getMeetupIds(collection);
