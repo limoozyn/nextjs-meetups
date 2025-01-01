@@ -85,12 +85,17 @@ export async function getStaticProps(context) {
 
   const meetupId = context.params.meetupId;
   const { _id, ...meetup } = await getMeetupById(collection, meetupId);
-
+  const spreadingMeetup = meetup || {
+    image: "",
+    title: "",
+    address: "",
+    description: "",
+  };
   return {
     props: {
       meetupData: {
         id: meetupId,
-        ...meetup,
+        ...spreadingMeetup,
       },
     },
   };
