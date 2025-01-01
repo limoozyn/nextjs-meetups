@@ -12,14 +12,17 @@ export default function MeetupDetails(props) {
   return (
     <>
       <Head>
-        <title>{props.meetupData.title}</title>
-        <meta name="description" content={props.meetupData.description} />
+        <title>{props.meetupData?.title || "Page title"}</title>
+        <meta
+          name="description"
+          content={props.meetupData?.description || "Page description"}
+        />
       </Head>
       <MeetupDetail
-        image={props.meetupData.image}
-        title={props.meetupData.title}
-        address={props.meetupData.address}
-        description={props.meetupData.description}
+        image={props.meetupData?.image || ""}
+        title={props.meetupData?.title || ""}
+        address={props.meetupData?.address || ""}
+        description={props.meetupData?.description || ""}
       />
     </>
   );
@@ -85,17 +88,12 @@ export async function getStaticProps(context) {
 
   const meetupId = context.params.meetupId;
   const { _id, ...meetup } = await getMeetupById(collection, meetupId);
-  const spreadingMeetup = meetup || {
-    image: "",
-    title: "",
-    address: "",
-    description: "",
-  };
+
   return {
     props: {
       meetupData: {
         id: meetupId,
-        ...spreadingMeetup,
+        ...meetup,
       },
     },
   };
