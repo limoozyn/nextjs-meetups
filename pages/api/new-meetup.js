@@ -61,7 +61,8 @@ export default async function handler(req, res) {
     }
 
     try {
-      await insertDocument(collection, req.body);
+      const result = await insertDocument(collection, req.body);
+      console.log("result of creating new meetup: ", result);
       res
         .status(201)
         .json({ message: "Meetup added successfully!", comment: req.body });
@@ -72,6 +73,7 @@ export default async function handler(req, res) {
     } finally {
       // Explicitly closing the connection
       if (client) {
+        console.log("closing client");
         await client.close(); // Ensure this is called on a MongoClient instance
       }
     }
