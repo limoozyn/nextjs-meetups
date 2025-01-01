@@ -42,13 +42,7 @@ export async function getStaticPaths() {
       await client.close(); // Ensure this is called on a MongoClient instance
     }
     return {
-      paths: [
-        {
-          params: {
-            meetupId: "1",
-          },
-        },
-      ],
+      paths: [],
       fallback: true,
     };
   }
