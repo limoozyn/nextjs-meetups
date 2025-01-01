@@ -70,13 +70,12 @@ export default async function handler(req, res) {
     } catch (error) {
       res.status(500).json({ message: "Storing meetup failed!" });
       // client.close();
+    } finally {
+      // Explicitly closing the connection
+      if (client) {
+        console.log("closing client");
+        await client.close(); // Ensure this is called on a MongoClient instance
+      }
     }
-    //  finally {
-    //   // Explicitly closing the connection
-    //   if (client) {
-    //     console.log("closing client");
-    //     await client.close(); // Ensure this is called on a MongoClient instance
-    //   }
-    // }
   }
 }
