@@ -32,8 +32,14 @@ export async function getStaticProps() {
     );
   } catch (error) {
     console.log("Connecting to the db failed!");
-    client.close();
-    return;
+    if (client) {
+      await client.close(); // Ensure this is called on a MongoClient instance
+    }
+    return {
+      props: {
+        meetups: [],
+      },
+    };
   }
   try {
     const meetupsResult = await getDocuments(collection);
@@ -44,10 +50,15 @@ export async function getStaticProps() {
         ...meetup,
       };
     });
-    client.close();
+    // client.close();
   } catch (error) {
     console.log("Getting meetups failed!");
-    client.close();
+    // client.close();
+  } finally {
+    // Explicitly closing the connection
+    if (client) {
+      await client.close(); // Ensure this is called on a MongoClient instance
+    }
   }
 
   // fetch data from an API

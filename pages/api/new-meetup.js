@@ -19,7 +19,9 @@ export default async function handler(req, res) {
     );
   } catch (error) {
     res.status(500).json({ message: "Connecting to the db failed!" });
-    client.close();
+    if (client) {
+      await client.close(); // Ensure this is called on a MongoClient instance
+    }
     return;
   }
   if (req.method === "POST") {
@@ -37,7 +39,10 @@ export default async function handler(req, res) {
       res
         .status(422)
         .json({ message: "Invalid Input - fields should be filled." });
-      client.close();
+      if (client) {
+        await client.close(); // Ensure this is called on a MongoClient instance
+      }
+      // client.close();
 
       return;
     }
@@ -47,7 +52,10 @@ export default async function handler(req, res) {
       res
         .status(422)
         .json({ message: "Meetup with the title exists already!" });
-      client.close();
+      // client.close();
+      if (client) {
+        await client.close(); // Ensure this is called on a MongoClient instance
+      }
 
       return;
     }
@@ -60,7 +68,12 @@ export default async function handler(req, res) {
       return;
     } catch (error) {
       res.status(500).json({ message: "Storing meetup failed!" });
-      client.close();
+      // client.close();
+    } finally {
+      // Explicitly closing the connection
+      if (client) {
+        await client.close(); // Ensure this is called on a MongoClient instance
+      }
     }
   }
 }
