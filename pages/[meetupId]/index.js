@@ -46,7 +46,7 @@ export async function getStaticPaths() {
     }
     return {
       paths: [],
-      fallback: true,
+      fallback: false,
     };
   }
   try {
@@ -60,7 +60,7 @@ export async function getStaticPaths() {
           meetupId: _id.toString(),
         },
       })),
-      fallback: false,
+      fallback: "blocking",
     };
   } catch (error) {
     console.log("Getting meetups failed!");
